@@ -43,14 +43,25 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required',
-            'stock' => 'required'
+            'stock' => 'required',
+            'image' => 'mimes:png,jpg,jpeg,gif,webp'
         ], [
             'name.required' => 'name wajib diisi',
             'price.required' => 'price wajib diisi',
-            'stock.required' => 'stock wajib diisi'
+            'stock.required' => 'stock wajib diisi',
+            'image.mimes' => 'image harus berformat png/jpg/jpeg/gif/webp'
         ]);
 
-        Product::create($request->all());
+        $input = $request->all();
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image->storeAs('public/image', $image->hashName());
+
+            $input['image'] = $image->hashName();
+        }
+
+        Product::create($input);
         Alert::success('Berhasil', 'Data Berhasil Ditambahkan');
         return redirect()->route('product.index');
     }

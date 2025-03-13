@@ -58,6 +58,9 @@
                             Stock
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Image
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Action
                         </th>
                     </tr>
@@ -69,6 +72,13 @@
                             <td class="px-6 py-4">{{ $data->name }}</td>
                             <td class="px-6 py-4">{{ number_format($data->price, 0, ',', '.') }}</td>
                             <td class="px-6 py-4">{{ $data->stock }}</td>
+                            <td class="px-6 py-4">
+                                @if ($data->image)
+                                    <img src="{{ asset('storage/image/' . $data->image) }}" alt="" class="w-[100] rounded">
+                                @else
+                                    -
+                                @endif
+                            </td>
                             <td class="px-6 py-4">
                                 <a class="font-medium text-white bg-yellow-400 px-2 py-2 rounded dark:text-blue-500 hover:underline"
                                         href="{{ route('product.edit', $data->id) }}"><i class="fa-solid fa-pen"></i></a>
