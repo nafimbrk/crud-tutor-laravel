@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductController extends Controller
@@ -93,14 +94,28 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required',
-            'stock' => 'required'
+            'stock' => 'required',
         ], [
             'name.required' => 'name wajib diisi',
             'price.required' => 'price wajib diisi',
-            'stock.required' => 'stock wajib diisi'
+            'stock.required' => 'stock wajib diisi',
         ]);
 
-        $product->update($request->all());
+        $input = $request->all();
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image->storeAs('public/image', $image->hashName());
+
+            Storage::delete('public/image/' . $product->image);
+
+            $input['image'] = $image->hashName();
+        } else {
+            unset($input['image']);
+        }
+
+        $product->update($input);
+
         Alert::success('Berhasil', 'Data Berhasil Diubah');
         return redirect()->route('product.index');
     }

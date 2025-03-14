@@ -74,7 +74,7 @@
                             <td class="px-6 py-4">{{ $data->stock }}</td>
                             <td class="px-6 py-4">
                                 @if ($data->image)
-                                    <img src="{{ asset('storage/image/' . $data->image) }}" alt="" class="w-[100] rounded">
+                                    <img src="{{ asset('storage/image/' . $data->image) }}" alt="" class="w-[100px] rounded">
                                 @else
                                     -
                                 @endif
