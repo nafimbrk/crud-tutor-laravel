@@ -126,6 +126,7 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
+        Storage::delete('public/image/'. $product->image);
         $product->delete();
         Alert::success('Berhasil', 'Data Berhasil Dihapus');
         return redirect()->route('product.index');
